@@ -56,3 +56,48 @@ MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA0gT54t7O...
 ...
 -----END PUBLIC KEY-----
 Important: Ensure the entire string, including the -----BEGIN...----- and -----END...----- markers and any newline characters (\n) within the key, is correctly set as the environment variable's value.
+
+### 3. Google Cloud Deployment
+
+---# env.yaml
+GCP_PROJECT: your-gcp-project-id # Replace with your actual GCP Project ID
+SENDGRID_PUBLIC_KEY: |
+  -----BEGIN PUBLIC KEY-----
+  YOUR_SENDGRID_PUBLIC_KEY_HERE
+  -----END PUBLIC KEY-----
+```
+**Replace `your-gcp-project-id` and `YOUR_SENDGRID_PUBLIC_KEY_HERE` with your actual values.**
+
+**Explanation of the `env.yaml` format:**
+*   This YAML file defines the environment variables that will be passed to your Cloud Function during deployment.
+*   The `|` symbol followed by indented lines is standard YAML syntax for multi-line strings. This is crucial for the `SENDGRID_PUBLIC_KEY` as the key itself contains newline characters.
+
+**Deployment Command:**
+
+Use the `gcloud` command with the `--env-vars-file` flag pointing to your `env.yaml`:
+
+```bash
+gcloud functions deploy sendgrid-webhook \
+  --runtime nodejs20 \
+  --trigger-http \
+  --entry-point helloHttp \
+  --region us-central1 \
+  --env-vars-file env.yaml \
+  --allow-unauthenticated \
+  --gen2
+```
+
+**Explanation of the deployment command:**
+
+*   `gcloud functions deploy sendgrid-webhook`: This is the command to deploy a Cloud Function named `sendgrid-webhook`.
+*   `--runtime nodejs20`: Specifies that the function should run on the Node.js 20 runtime.
+*   `--trigger-http`: Configures the function to be triggered by HTTP requests.
+*   `--entry-point helloHttp`: Tells Cloud Functions the name of the function (exported in `index.js`) that handles the incoming requests.
+*   `--region us-central1`: Specifies the Google Cloud region where the function will be deployed. You can choose a region closer to your users or SendGrid servers.
+*   `--env-vars-file env.yaml`: This crucial flag tells `gcloud` to load environment variables from the `env.yaml` file you created.
+*   `--allow-unauthenticated`: Makes the function publicly accessible via HTTP. **For production, it is highly recommended to secure your function.** This option is used here for simplicity during initial setup. Consider using IAM or other authentication methods in a production environment.
+*   `--gen2`: Deploys the function using the Cloud Functions (2nd gen) platform, which offers enhanced features and integration with Eventarc.
+
+**Alternative: Setting Environment Variables Directly (Less Recommended for Keys)**
+
+You can also set environment variables directly on the command line using the `--set-env-vars` flag. However, for the `SENDGRID_PUBLIC_KEY`, which contains special characters and is multiline, using `env.yaml` is much cleaner and less prone to errors.
