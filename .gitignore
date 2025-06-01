@@ -1,0 +1,88 @@
+# Node.js and npm/yarn
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json # Usually committed, but add if you have specific reasons not to. See note below.
+yarn.lock         # Usually committed, but add if you have specific reasons not to. See note below.
+
+# Logs
+logs
+*.log
+*.log.*
+
+# Environment variables files
+# These files often contain sensitive credentials and should not be committed.
+# If your .env.yaml is a template without secrets, you might decide to commit it.
+.env
+.env.*
+!/.env.example # It's good practice to commit an example env file
+env.yaml       # If this file contains your actual SENDGRID_PUBLIC_KEY or other secrets
+*.env.yaml     # Catch-all for other environment yaml files
+
+# Google Cloud SDK credentials and local configurations
+# (These are typically in your home directory, but good to list if they ever end up in project)
+.gcloud/
+*.bak
+
+# Operating System generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# IDE / Editor specific files
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains / WebStorm / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# Build output / Distribution folders
+# (May not be strictly necessary for simple Cloud Functions if deploying source directly,
+# but good practice if you have a local build step, e.g., for TypeScript)
+dist/
+build/
+out/
+public/ # If you have a public assets folder built by a framework
+
+# Coverage reports
+coverage/
+lcov.info
+*.lcov
+
+# Temporary files
+tmp/
+temp/
+*~
+*.tmp
+
+# Other
+.eslintcache
+.firebase # If using Firebase alongside
+.firebaserc # Specific to your local Firebase project link
+
+# If using specific testing libraries that generate reports
+# jest-junit.xml
+# .nyc_output
+
+# Comments explaining sections are good practice too!
